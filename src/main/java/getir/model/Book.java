@@ -31,9 +31,4 @@ public class Book {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt;
-
-    /* Avoid concurrent updates
-    @Version
-    protected Long version;
-    */
 }

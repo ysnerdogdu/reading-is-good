@@ -45,7 +45,7 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
         catch (Exception ex) {
-            log.error("Exception is occurred during order creation ", ex);
+            log.error("Exception is occurred during order creation {}", ex.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
