@@ -14,7 +14,7 @@ It runs on an embedded Tomcat via port 8080.
 
 ### AuthenticationController
 * Create Bearer token
-  `` java
+  ``` java
   @PostMapping
   public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
   ...
