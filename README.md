@@ -28,7 +28,7 @@ It runs on an embedded Tomcat via port 8080.
   ``` json
   {
     "username": "ysnerdogdu",
-    "password": "12345."
+    "password": "12345"
   }
   ```
   Sample Response
