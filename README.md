@@ -2,12 +2,41 @@
 It is a backend service developed by using SpringBoot and MongoDB.
 It runs on an embedded Tomcat via port 8080.
 
+#### Firstly, you need to create Bearer token to send request ```/authenticate``` endpoint, then use created Bearer token to send request other controller endpoints. Otherwise, UnAuthorized exception is returned
+#### Bearer token will expiry after 3 hours
+
 ## Controllers
+* AuthenticationController (Create Bearer token)
 * CustomerController (Create new customer, Query customer's orders)
 * BookController (Create new book, Update book stock)
 * OrderController (Create new Order, Query order detail, Query orders by date interval)
 * StaticsController (Query customer's monthly statics data) 
 
+### AuthenticationController
+* Create Bearer token
+  `` java
+  @PostMapping
+  public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+  ...
+  }
+  ```
+  Must Request
+  ``` http request
+  POST http://localhost:8080/authenticate
+  ```
+  With Body
+  ``` json
+  {
+    "username": "ysnerdogdu",
+    "password": "12345."
+  }
+  ```
+  Sample Response
+  ``` json  
+  {
+    "jwtToken": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5c25lcmRvZ2R1IiwiaWF0IjoxNjM0NTcyMjI5LCJleHAiOjE2MzQ1ODMwMjl9.ps8rcyg4KuSDXS4uHoD2LjeWREiy9iPDrJ-CIa0k-F0"
+  }
+  ```
 ### CustomerController
 * Create customer endpoint
   ``` java
@@ -130,6 +159,10 @@ Sample Request
   GET http://localhost:8080/statics/{customerId}
   ```
 
+## Sample Postman SS
+![img.png](img.png)
+
+
 ## Used Technologies and Libraries
 * Java 11
 * SpringBoot 2.4.4
@@ -137,7 +170,6 @@ Sample Request
 * Apache Maven
 * Gson
 * Lombok
-* Junit(Jupiter) - Unit test
 * Mockito
 
 ### Compile
