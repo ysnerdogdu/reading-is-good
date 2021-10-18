@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @Document(collection = "books")
 public class Book {
+
     @Id
     private String id;
 
@@ -31,4 +32,8 @@ public class Book {
 
     private LocalDateTime updatedAt;
 
+    /* Avoid concurrent updates
+    @Version
+    protected Long version;
+    */
 }

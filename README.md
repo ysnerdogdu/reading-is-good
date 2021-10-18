@@ -32,7 +32,7 @@
   ```
 Sample request
   ``` http request
-  http://localhost:8080/customer/{customerId}/orders
+  GET http://localhost:8080/customer/{customerId}/orders
   ```
 
 ### BookController
@@ -45,7 +45,7 @@ Sample request
   ```
   Sample Request
   ``` http request
-  http://localhost:8080/books/create
+  POST http://localhost:8080/books/create
   ```
   ``` json
   {
@@ -66,7 +66,7 @@ Sample request
   ```
   Sample Request
   ``` http request
-  http://localhost:8080/books/update/{bookId}?stockCount=101
+  PUT http://localhost:8080/books/update/{bookId}?stockCount=101
   ```
 
 ### OrderController

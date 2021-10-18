@@ -5,6 +5,7 @@ import getir.controller.payload.response.OrderDto;
 import getir.service.IOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,9 +37,14 @@ public class OrderController {
             if (newOrderDto != null) {
                 return new ResponseEntity<>(newOrderDto, HttpStatus.CREATED);
             } else {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
             }
-        } catch (Exception ex) {
+        }
+        catch (OptimisticLockingFailureException ex) {
+            log.error("Concurrent update is detected. Please try again");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        catch (Exception ex) {
             log.error("Exception is occurred during order creation ", ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

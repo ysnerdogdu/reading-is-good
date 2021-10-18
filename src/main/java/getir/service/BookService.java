@@ -6,6 +6,7 @@ import getir.model.Book;
 import getir.repository.IBookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +19,8 @@ import java.util.Optional;
 public class BookService implements IBookService {
 
     private final IBookRepository bookRepository;
+
+    private final MongoTemplate mongoTemplate;
 
     @Override
     public Book getBookWithHavingEnoughStock(String bookId, Integer stock) {
@@ -36,7 +39,9 @@ public class BookService implements IBookService {
 
     @Override
     public void saveBooks(List<Book> bookList) {
-        bookRepository.saveAll(bookList);
+        for (Book book : bookList) {
+            bookRepository.save(book);
+        }
     }
 
     @Override
