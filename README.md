@@ -1,10 +1,12 @@
 # Basic Online Book Retail Service
+It is a backend service developed by using SpringBoot and MongoDB.
+It runs on an embedded Tomcat via port 8080.
 
 ## Controllers
-* CustomerController
-* BookController
-* OrderController
-* StaticsController
+* CustomerController (Create new customer, Query customer's orders)
+* BookController (Create new book, Update book stock)
+* OrderController (Create new Order, Query order detail, Query orders by date interval)
+* StaticsController (Query customer's monthly statics data) 
 
 ### CustomerController
 * Create customer endpoint
@@ -33,7 +35,7 @@
    ...
    }
   ```
-Sample request
+  Sample request
   ``` http request
   GET http://localhost:8080/customer/{customerId}/orders?page=0&size=1
   ```
@@ -131,7 +133,20 @@ Sample Request
 ## Used Technologies and Libraries
 * Java 11
 * SpringBoot 2.4.4
-* Spring Data MongoDB 2.4.4
-* Gson 2.8.6
+* MongoDB
+* Apache Maven
+* Gson
 * Lombok
+* Junit(Jupiter) - Unit test
 * Mockito
+
+### Compile
+```
+mvn clean
+mvn install
+```
+
+### Run
+```
+mvn spring-boot:run
+```
