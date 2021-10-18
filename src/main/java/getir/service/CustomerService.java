@@ -7,6 +7,7 @@ import getir.model.Customer;
 import getir.repository.ICustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class CustomerService implements ICustomerService{
     }
 
     @Override
-    public List<OrderDto> getCustomerAllOrders(String customerId) {
-        return  orderService.getOrdersByCustomerId(customerId);
+    public List<OrderDto> getCustomerAllOrders(String customerId, Pageable pageable) {
+        return  orderService.getOrdersByCustomerId(customerId, pageable);
     }
 }

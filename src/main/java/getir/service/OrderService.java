@@ -8,6 +8,8 @@ import getir.model.Order;
 import getir.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -107,9 +109,10 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<OrderDto> getOrdersByCustomerId(String customerId) {
+    public List<OrderDto> getOrdersByCustomerId(String customerId, Pageable pageable) {
 
-        List<Order> customerOrders = orderRepository.findByCustomerId(customerId);
+        Page<Order> pageOrders = orderRepository.findByCustomerId(customerId, pageable);
+        List<Order> customerOrders = pageOrders.getContent();
 
         return customerOrders.stream()
                 .map(OrderDto::fromOrder)

@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -70,6 +71,7 @@ class CustomerServiceTest {
         String customerId = "c1001L";
         String status = "Completed";
         LocalDateTime localDateTime = LocalDateTime.of(2021, 10, 11, 13, 30);
+        PageRequest pageRequest = PageRequest.of(0, 20);
 
         OrderDto orderDto = OrderDto.builder()
                 .customerId(customerId)
@@ -78,9 +80,9 @@ class CustomerServiceTest {
                 .build();
         List<OrderDto> orders = Collections.singletonList(orderDto);
 
-        when(orderService.getOrdersByCustomerId(customerId)).thenReturn(orders);
+        when(orderService.getOrdersByCustomerId(customerId, pageRequest)).thenReturn(orders);
 
-        List<OrderDto> customerAllOrders = customerService.getCustomerAllOrders(customerId);
+        List<OrderDto> customerAllOrders = customerService.getCustomerAllOrders(customerId, pageRequest);
 
         assertNotNull(customerAllOrders);
         assertEquals(orders.size(), customerAllOrders.size());

@@ -27,12 +27,15 @@
   ```
 * Fetch customer's orders endpoint
   ``` java
-  @GetMapping("/{id}/orders")
-    public ResponseEntity<List<OrderDto>> getCustomerOrders(@PathVariable String id) {
+   @GetMapping("/{id}/orders")
+   public ResponseEntity<List<OrderDto>> getCustomerOrders(@PathVariable String id,
+                                                            @PageableDefault(size = 20) Pageable pageable) {
+   ...
+   }
   ```
 Sample request
   ``` http request
-  GET http://localhost:8080/customer/{customerId}/orders
+  GET http://localhost:8080/customer/{customerId}/orders?page=0&size=1
   ```
 
 ### BookController

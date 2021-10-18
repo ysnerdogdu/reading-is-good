@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -84,14 +85,15 @@ class CustomerControllerTest {
         String customerId = "c1L";
         OrderDto orderDto = OrderDto.builder().build();
         List<OrderDto> orderDtoList = Collections.singletonList(orderDto);
+        PageRequest pageRequest = PageRequest.of(0, 20);
 
-        when(customerService.getCustomerAllOrders(customerId)).thenReturn(orderDtoList);
+        when(customerService.getCustomerAllOrders(customerId, pageRequest)).thenReturn(orderDtoList);
 
         String url = "/customer/create";
         this.mockMvc.perform(get("/customer/{id}/orders", customerId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
 
-        verify(customerService).getCustomerAllOrders(customerId);
+        verify(customerService).getCustomerAllOrders(customerId, pageRequest);
     }
 }

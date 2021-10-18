@@ -4,6 +4,7 @@ import getir.controller.payload.response.CustomerMonthlyStaticsDto;
 import getir.controller.payload.response.OrderDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Month;
@@ -22,7 +23,7 @@ public class StaticsService  implements IStaticsService {
     public List<CustomerMonthlyStaticsDto> getCustomerMonthlyStatics(String customerId) {
 
         // get customer al orders
-        List<OrderDto> customerOrders = customerService.getCustomerAllOrders(customerId);
+        List<OrderDto> customerOrders = customerService.getCustomerAllOrders(customerId, Pageable.unpaged());
 
         // group customer orders by month
         Map<Month, List<OrderDto>> result = customerOrders.stream()

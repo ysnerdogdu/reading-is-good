@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,6 @@ class StaticsServiceTest {
     void getCustomerMonthlyStatics() {
 
         String customerId = "c101L";
-
         BookOrder bookOrder1 = new BookOrder("1l", 1);
         BookOrder bookOrder2 = new BookOrder("2l", 2);
         BookOrder bookOrder3 = new BookOrder("3l", 3);
@@ -51,7 +51,7 @@ class StaticsServiceTest {
                 .build();
 
 
-        when(customerService.getCustomerAllOrders(customerId)).thenReturn(Arrays.asList(orderDto1, orderDto2));
+        when(customerService.getCustomerAllOrders(customerId, Pageable.unpaged())).thenReturn(Arrays.asList(orderDto1, orderDto2));
 
         List<CustomerMonthlyStaticsDto> customerMonthlyStatics = staticsService.getCustomerMonthlyStatics(customerId);
 
