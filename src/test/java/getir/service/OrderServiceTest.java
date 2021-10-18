@@ -53,9 +53,9 @@ class OrderServiceTest {
         Book book1 = Book.builder().id(bookId1).stock(10).price(10.0).build();
         Book book2 = Book.builder().id(bookId2).stock(5).price(10.0).build();
 
-        when(bookService.getBookWithStock(eq(bookOrder1.getBookId()), eq(bookOrder1.getCount())))
+        when(bookService.getBookWithHavingEnoughStock(eq(bookOrder1.getBookId()), eq(bookOrder1.getCount())))
                 .thenReturn(book1);
-        when(bookService.getBookWithStock(eq(bookOrder2.getBookId()), eq(bookOrder2.getCount())))
+        when(bookService.getBookWithHavingEnoughStock(eq(bookOrder2.getBookId()), eq(bookOrder2.getCount())))
                 .thenReturn(book2);
 
         when(orderRepository.save(any(Order.class))).thenReturn(order);

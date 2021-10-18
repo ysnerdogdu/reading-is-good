@@ -32,9 +32,12 @@ public class OrderController {
         log.info("New order request is received for customer={}", newOrderRequest.getCustomerId());
 
         try {
-            OrderDto newOrder = orderService.createNewOrder(newOrderRequest);
-            return new ResponseEntity<>(newOrder, HttpStatus.OK);
-
+            OrderDto newOrderDto = orderService.createNewOrder(newOrderRequest);
+            if (newOrderDto != null) {
+                return new ResponseEntity<>(newOrderDto, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } catch (Exception ex) {
             log.error("Exception is occurred during order creation ", ex);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -47,8 +50,11 @@ public class OrderController {
         log.info("Order query by id={} is received", id);
 
         try {
-            OrderDto order = orderService.getOrderById(id);
-            return new ResponseEntity<>(order, HttpStatus.OK);
+            OrderDto orderDto = orderService.getOrderById(id);
+            if (orderDto == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(orderDto, HttpStatus.OK);
 
         } catch (Exception ex) {
             log.error("Exception is occurred during order fetching ", ex);
@@ -57,13 +63,16 @@ public class OrderController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<OrderDto>> getOrders(@DateTimeFormat(iso = DATE) @RequestParam LocalDate startDate,
+    public ResponseEntity<List<OrderDto>> getOrdersByDateInterval(@DateTimeFormat(iso = DATE) @RequestParam LocalDate startDate,
                                                     @DateTimeFormat(iso = DATE) @RequestParam LocalDate endDate) {
 
         log.info("Orders query by startDate={} endDate={} is received", startDate, endDate);
 
         try {
             List<OrderDto> orders = orderService.getOrdersByDate(startDate.atStartOfDay(), endDate.atStartOfDay());
+            if (orders == null) {
+                return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
             return new ResponseEntity<>(orders, HttpStatus.OK);
 
         } catch (Exception ex) {

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IBookService {
 
-    Book getBookWithStock(String bookId, Integer stock);
+    Book getBookWithHavingEnoughStock(String bookId, Integer stock);
 
     void saveBooks(List<Book> bookList);
 

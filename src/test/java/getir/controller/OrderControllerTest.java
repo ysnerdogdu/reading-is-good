@@ -50,16 +50,13 @@ class OrderControllerTest {
 
     @Test
     void placeOrder() throws Exception {
-        when(orderService.createNewOrder(any(NewOrderRequest.class))).thenReturn(any(OrderDto.class));
+        OrderDto orderDto = OrderDto.builder().build();
+        when(orderService.createNewOrder(any(NewOrderRequest.class))).thenReturn(orderDto);
 
         this.mockMvc.perform(post("/order/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(gson.toJson(new NewOrderRequest())))
-                .andExpect(status().isOk());
-                //.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-                /*.andExpect(jsonPath("$.data.name", is(createdBook.getName())))
-                .andExpect(jsonPath("$.data.writer", is(createdBook.getWriter())))
-                .andExpect(jsonPath("$.data.publishYear", is(createdBook.getPublishYear())));*/
+                .andExpect(status().isCreated());
 
         verify(orderService).createNewOrder(any(NewOrderRequest.class));
     }

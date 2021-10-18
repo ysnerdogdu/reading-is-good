@@ -31,6 +31,7 @@ public class OrderService implements IOrderService {
         String customerId = newOrderRequest.getCustomerId();
         List<BookOrder> bookOrderList = newOrderRequest.getBookOrders();
 
+        // filter invalid book orders which have invalid book count
         final List<BookOrder> invalidBookOrders = bookOrderList.stream()
                 .filter(bookOrder -> bookOrder.getCount() <= 0)
                 .collect(Collectors.toList());
@@ -40,8 +41,9 @@ public class OrderService implements IOrderService {
             return null;
         }
 
+        // fetch books by id and controlling whether or not there is enough stock for each book order
         List<Book> bookList = bookOrderList.stream()
-                .map(bookOrder -> bookService.getBookWithStock(bookOrder.getBookId(), bookOrder.getCount()))
+                .map(bookOrder -> bookService.getBookWithHavingEnoughStock(bookOrder.getBookId(), bookOrder.getCount()))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
@@ -53,17 +55,20 @@ public class OrderService implements IOrderService {
         Map<String, Integer> collect = bookOrderList.stream()
                 .collect(Collectors.toMap(BookOrder::getBookId, BookOrder::getCount));
 
-
+        // update each book stock
         bookList.forEach(book -> book.setStock(book.getStock() - collect.get(book.getId())));
         bookService.saveBooks(bookList);
 
+        // calculate total order price
         Double totalPrice = bookList.stream()
                 .map(book -> collect.get(book.getId()) * book.getPrice())
                 .reduce(0.0, Double::sum);
 
+        // calculate total book count
         Integer totalBooks = collect.values().stream()
                 .reduce(0, Integer::sum);
 
+        // create new order
         Order order = Order.builder()
                 .customerId(customerId)
                 .bookOrders(bookOrderList)

@@ -21,8 +21,10 @@ public class StaticsService  implements IStaticsService {
     @Override
     public List<CustomerMonthlyStaticsDto> getCustomerMonthlyStatics(String customerId) {
 
+        // get customer al orders
         List<OrderDto> customerOrders = customerService.getCustomerAllOrders(customerId);
 
+        // group customer orders by month
         Map<Month, List<OrderDto>> result = customerOrders.stream()
                 .collect(Collectors.groupingBy(order -> order.getCreatedAt().getMonth()));
 
@@ -31,6 +33,12 @@ public class StaticsService  implements IStaticsService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Helper method to calculate total book and total amount for each month orders
+     * @param month java.time.Month
+     * @param orderList list of order
+     * @return CustomerMonthlyStaticsDto
+     */
     private CustomerMonthlyStaticsDto createCustomerMonthlyStatics(Month month, List<OrderDto> orderList) {
         int totalBookCount = 0;
         double totalPurchasedAmount = 0;

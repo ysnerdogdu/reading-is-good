@@ -20,7 +20,7 @@ public class BookService implements IBookService {
     private final IBookRepository bookRepository;
 
     @Override
-    public Book getBookWithStock(String bookId, Integer stock) {
+    public Book getBookWithHavingEnoughStock(String bookId, Integer stock) {
         Optional<Book> bookOpt = bookRepository.findById(bookId);
 
         if (bookOpt.isEmpty()) {
@@ -54,16 +54,17 @@ public class BookService implements IBookService {
             return null;
         }
 
+        // query book with same name, writer, publishYear and price
         Optional<Book> bookOpt = bookRepository.findByNameAndWriterAndPublishYearAndPrice(bookName, writer, publishYear, price);
 
         Book book;
-        if (bookOpt.isPresent()) {
+        if (bookOpt.isPresent()) { // if same book exists already, just update stock value
 
             book = bookOpt.get();
             book.setUpdatedAt(LocalDateTime.now());
             book.setStock(book.getStock() + stock);
 
-        } else {
+        } else { // If not exists, create new book
 
              book = Book.builder()
                     .name(bookName)
@@ -84,6 +85,7 @@ public class BookService implements IBookService {
 
     @Override
     public BookDto updateBookStock(String bookId, Integer stockValue) {
+        // query book by id
         Optional<Book> bookOptional = bookRepository.findById(bookId);
 
         if (bookOptional.isEmpty()) {
@@ -91,9 +93,9 @@ public class BookService implements IBookService {
             return null;
         }
 
+        // update book stock value
         Book book = bookOptional.get();
         book.setStock(stockValue);
-
         Book updatedBook = bookRepository.save(book);
 
         log.info("Book is updated successfully id={} stockValue={}", bookId, stockValue);

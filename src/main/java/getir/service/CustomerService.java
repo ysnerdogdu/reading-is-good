@@ -31,7 +31,7 @@ public class CustomerService implements ICustomerService{
 
         Optional<Customer> customerOptional = customerRepository.findByEmail(email);
 
-        if (customerOptional.isPresent()) {
+        if (customerOptional.isPresent()) { // if same email customer exists already, return error
             log.error("Customer already exists with email={}", email);
             return null;
         }

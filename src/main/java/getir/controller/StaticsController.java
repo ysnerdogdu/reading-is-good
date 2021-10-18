@@ -19,6 +19,11 @@ public class StaticsController {
 
     private final IStaticsService staticsService;
 
+    /**
+     * Query to month-based customer order data
+     * @param customerId id of customer
+     * @return list of CustomerMonthlyStaticsDto
+     */
     @GetMapping("/{customerId}")
     public ResponseEntity<List<CustomerMonthlyStaticsDto>> getCustomerMonthlyStatics(@PathVariable String customerId) {
 

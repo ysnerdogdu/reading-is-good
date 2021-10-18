@@ -75,9 +75,6 @@ class CustomerControllerTest {
                 .content(gson.toJson(request)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-                /*.andExpect(jsonPath("$.data.name", is(createdBook.getName())))
-                .andExpect(jsonPath("$.data.writer", is(createdBook.getWriter())))
-                .andExpect(jsonPath("$.data.publishYear", is(createdBook.getPublishYear())));*/
 
         verify(customerService).createNewCustomer(any(CustomerAddRequest.class));
     }
@@ -94,9 +91,6 @@ class CustomerControllerTest {
         this.mockMvc.perform(get("/customer/{id}/orders", customerId))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-                /*.andExpect(jsonPath("$.data.name", is(createdBook.getName())))
-                .andExpect(jsonPath("$.data.writer", is(createdBook.getWriter())))
-                .andExpect(jsonPath("$.data.publishYear", is(createdBook.getPublishYear())));*/
 
         verify(customerService).getCustomerAllOrders(customerId);
     }
